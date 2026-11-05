@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doʻstlik va Muruvvat — Qalblar Koʻprigi</title>
+  <meta name="description" content="Doʻstlik va muruvvat mavzusidagi interaktiv portal: 4 xil ibratli oʻyinlar, ilmiy va tarixiy qiziqarli faktlar, taʼsirli hikoyalar hamda ibratli videolar.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Orqa fon nurlari / Ambient glow -->
+  <div class="ambient-glow glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow glow-2" aria-hidden="true"></div>
+  <div class="ambient-glow glow-3" aria-hidden="true"></div>
+
+  <!-- Yuqori navigatsiya paneli -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="#bosh-sahifa" class="brand-logo" aria-label="Bosh sahifaga oʻtish">
+        <span class="logo-icon" aria-hidden="true">🤝</span>
+        <div class="logo-text">
+          <span class="brand-title">Mehr & Doʻstlik</span>
+          <span class="brand-subtitle">Muruvvat maskani</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" id="mainNav" aria-label="Asosiy menyu">
+        <ul class="nav-list">
+          <li><a href="#oyinlar" class="nav-link"><span class="nav-icon">🎮</span> Oʻyinlar (4 xil)</a></li>
+          <li><a href="#faktlar" class="nav-link"><span class="nav-icon">💡</span> Faktlar</a></li>
+          <li><a href="#hikoyalar" class="nav-link"><span class="nav-icon">📖</span> Hikoyalar</a></li>
+          <li><a href="#videolar" class="nav-link"><span class="nav-icon">🎬</span> Videolar</a></li>
+          <li><a href="#maktub" class="nav-link"><span class="nav-icon">💌</span> Muruvvat maktubi</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Ovoz effekti tugmasi -->
+        <button type="button" class="action-btn" id="soundToggleBtn" aria-label="Ovoz effektlarini yoqish yoki oʻchirish" title="Ovoz effektlari">
+          <span id="soundIcon">🔊</span>
+        </button>
+
+        <!-- Mavzu o'zgartirish (Dark/Light mode) -->
+        <button type="button" class="action-btn" id="themeToggleBtn" aria-label="Tungi yoki kunduzgi rejimni tanlash" title="Mavzuni almashtirish">
+          <span id="themeIcon">🌙</span>
+        </button>
+
+        <!-- Mobil menyu tugmasi -->
+        <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-expanded="false" aria-controls="mainNav" aria-label="Menyuni ochish">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="asosiy-mazmun">
+    <!-- HERO BO'LIMI -->
+    <section class="hero-section" id="bosh-sahifa">
+      <div class="container hero-container">
+        <div class="hero-badge">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span>Ezgulik va hamjihatlik sari qadam</span>
+        </div>
+        <h1 class="hero-title">
+          Doʻstlik — koʻngillar gavhari,<br>
+          <span class="gradient-text">Muruvvat — insonlik ziynati</span>
+        </h1>
+        <p class="hero-description">
+          Chin doʻstlik qalbni yoritadi, begʻaraz muruvvat esa dunyoni mehrga toʻldiradi.
+          Ushbu maskanda siz 4 xil qiziqarli oʻyin oʻynashingiz, hayratlanarli ilmiy va tarixiy faktlar bilan tanishishingiz,
+          ibratli hikoyalar va videolarni tomosha qilishingiz mumkin.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#oyinlar" class="btn btn-primary">
+            <span>🎮 Oʻyinlarni boshlash</span>
+          </a>
+          <a href="#hikoyalar" class="btn btn-secondary">
+            <span>📖 Ibratli hikoyalar</span>
+          </a>
+          <button type="button" class="btn btn-accent" id="dailyKindnessBtn">
+            <span>🌟 Kunlik muruvvat chaqirigʻi</span>
+          </button>
+        </div>
+
+        <!-- Tezkor Mehr hisoblagichi va statistika kartasi -->
+        <div class="kindness-counter-card">
+          <div class="counter-item">
+            <span class="counter-icon">💖</span>
+            <div class="counter-info">
+              <span class="counter-num" id="goodDeedsCount">1,480</span>
+              <span class="counter-label">Bugun qilingan ezgu amallar</span>
+            </div>
+            <button type="button" class="btn-sm btn-outline" id="spreadLoveBtn">
+              + Men ham muruvvat qildim!
+            </button>
+          </div>
+          <div class="counter-divider"></div>
+          <div class="counter-item">
+            <span class="counter-icon">🕊️</span>
+            <div class="counter-info">
+              <span class="counter-highlight">"Yaxshilik qil, daryoga tashla..."</span>
+              <span class="counter-sub">Xalqimizning oltin hikmati</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1-KATALOG: 4 XIL O'YINLAR BO'LIMI -->
+    <section class="section games-section" id="oyinlar">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Interaktiv Maydoncha</span>
+          <h2 class="section-title">Doʻstlik va Muruvvatga oid 4 xil oʻyin</h2>
+          <p class="section-subtitle">
+            Oʻyin orqali yaxshilik, vafodorlik, saxovat va kechirimlilik fazilatlarini sinab koʻring va rivojlantiring.
+          </p>
+        </div>
+
+        <!-- O'yinlar navigatsiya tablari -->
+        <div class="games-tabs-wrapper" role="tablist" aria-label="Do'stlik o'yinlari">
+          <button type="button" class="game-tab-btn active" role="tab" id="tab-game1" aria-selected="true" aria-controls="game-panel-1" data-game="game1">
+            <span class="tab-emoji">🌟</span>
+            <span class="tab-title">1. Muruvvatli Qarorlar</span>
+            <span class="tab-badge">Ssenariy</span>
+          </button>
+          <button type="button" class="game-tab-btn" role="tab" id="tab-game2" aria-selected="false" aria-controls="game-panel-2" data-game="game2">
+            <span class="tab-emoji">🃏</span>
+            <span class="tab-title">2. Mehribonlik Xotirasi</span>
+            <span class="tab-badge">Xotira oʻyini</span>
+          </button>
+          <button type="button" class="game-tab-btn" role="tab" id="tab-game3" aria-selected="false" aria-controls="game-panel-3" data-game="game3">
+            <span class="tab-emoji">🧩</span>
+            <span class="tab-title">3. Maqollar Zanjiri</span>
+            <span class="tab-badge">Hikmat boshqotirmasi</span>
+          </button>
+          <button type="button" class="game-tab-btn" role="tab" id="tab-game4" aria-selected="false" aria-controls="game-panel-4" data-game="game4">
+            <span class="tab-emoji">💖</span>
+            <span class="tab-title">4. Qalblar Gavhari</span>
+            <span class="tab-badge">Ezgulik tutuvchi</span>
+          </button>
+        </div>
+
+        <!-- O'YIN 1: MURUVVATLI QARORLAR (Ssenariy va Axloqiy tanlov) -->
+        <div class="game-panel active" id="game-panel-1" role="tabpanel" aria-labelledby="tab-game1">
+          <div class="game-card">
+            <div class="game-header">
+              <div class="game-meta">
+                <span class="game-badge-soft">1-Oʻyin • Hayotiy Tanlovlar</span>
+                <h3 class="game-name">Muruvvatli Qarorlar: Hayotiy Sinovlar</h3>
+                <p class="game-instruction">
+                  Sizga kundalik hayotda uchraydigan turli vaziyatlar taqdim etiladi. Doʻstlik va muruvvat hissi bilan eng toʻgʻri qarorni tanlang!
+                </p>
+              </div>
+              <div class="game-stats-box">
+                <div class="stat-pill">
+                  <span>Savol:</span>
+                  <strong id="scenarioProgress">1 / 5</strong>
+                </div>
+                <div class="stat-pill highlight">
+                  <span>Muruvvat bali:</span>
+                  <strong id="scenarioScore">0</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="game-body scenario-body" id="scenarioContainer">
+              <!-- JavaScript orqali ssenariy dinamik yuklanadi -->
+            </div>
+          </div>
+        </div>
+
+        <!-- O'YIN 2: MEHRIBONLIK XOTIRASI (Memory Card Matching) -->
+        <div class="game-panel" id="game-panel-2" role="tabpanel" aria-labelledby="tab-game2">
+          <div class="game-card">
+            <div class="game-header">
+              <div class="game-meta">
+                <span class="game-badge-soft">2-Oʻyin • Diqqat va Xotira</span>
+                <h3 class="game-name">Mehribonlik Xotirasi</h3>
+                <p class="game-instruction">
+                  Ezgulik, doʻstlik, hurmat va saxovat ramzlarini juftlab toping. Har bir juftlik ortida chuqur maʼno mujassam!
+                </p>
+              </div>
+              <div class="game-stats-box">
+                <div class="stat-pill">
+                  <span>Harakatlar:</span>
+                  <strong id="memoryMoves">0</strong>
+                </div>
+                <div class="stat-pill">
+                  <span>Juftliklar:</span>
+                  <strong id="memoryPairs">0 / 8</strong>
+                </div>
+                <div class="stat-pill">
+                  <span>Vaqt:</span>
+                  <strong id="memoryTimer">00:00</strong>
+                </div>
+                <button type="button" class="btn-sm btn-outline" id="memoryRestartBtn">Qayta boshlash</button>
+              </div>
+            </div>
+
+            <!-- Xotira kartalari panjarasi -->
+            <div class="memory-grid" id="memoryGrid" aria-label="Xotira o'yini kartalari">
+              <!-- JavaScript orqali 16 ta karta generatsiya qilinadi -->
+            </div>
+            <div class="memory-fact-banner" id="memoryFactBanner" aria-live="polite">
+              ✨ Bir juft kartani ochib, ezgu xislatlarni kashf eting!
+            </div>
+          </div>
+        </div>
+
+        <!-- O'YIN 3: MAQOLLAR VA HIKMATLAR ZANJIRI -->
+        <div class="game-panel" id="game-panel-3" role="tabpanel" aria-labelledby="tab-game3">
+          <div class="game-card">
+            <div class="game-header">
+              <div class="game-meta">
+                <span class="game-badge-soft">3-Oʻyin • Maʼrifat va Hikmat</span>
+                <h3 class="game-name">Maqollar va Hikmatlar Zanjiri</h3>
+                <p class="game-instruction">
+                  Aralashib ketgan soʻzlarni toʻgʻri tartibda bosib, doʻstlik va muruvvat haqidagi buyuk maqollarni tiklang!
+                </p>
+              </div>
+              <div class="game-stats-box">
+                <div class="stat-pill">
+                  <span>Maqol:</span>
+                  <strong id="proverbIndex">1 / 6</strong>
+                </div>
+                <div class="stat-pill highlight">
+                  <span>Toʻplangan ball:</span>
+                  <strong id="proverbScore">0</strong>
+                </div>
+                <button type="button" class="btn-sm btn-outline" id="proverbResetCurrentBtn">Tozalash</button>
+              </div>
+            </div>
+
+            <div class="proverb-game-body">
+              <div class="proverb-target-box">
+                <div class="target-label">Siz yigʻayotgan maqol:</div>
+                <div class="target-words-container" id="targetWordsContainer" aria-label="Tanlangan so'zlar">
+                  <span class="placeholder-text">Quyidagi soʻzlarni tartib bilan bosing...</span>
+                </div>
+              </div>
+
+              <div class="proverb-source-box">
+                <div class="source-label">Mavjud soʻzlar (aralash tartibda):</div>
+                <div class="source-words-container" id="sourceWordsContainer" aria-label="Aralash so'zlar">
+                  <!-- So'zlar JS da qo'shiladi -->
+                </div>
+              </div>
+
+              <div class="proverb-actions">
+                <button type="button" class="btn btn-primary" id="checkProverbBtn">
+                  <span>✅ Maqolni tekshirish</span>
+                </button>
+                <button type="button" class="btn btn-secondary" id="proverbHintBtn">
+                  <span>💡 Maslahat olish</span>
+                </button>
+              </div>
+
+              <div class="proverb-explanation" id="proverbExplanation" hidden>
+                <div class="explanation-title" id="proverbTitle"></div>
+                <p class="explanation-text" id="proverbMeaning"></p>
+                <button type="button" class="btn btn-accent btn-sm" id="nextProverbBtn">Keyingi maqolga oʻtish ➔</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- O'YIN 4: QALBLAR GAVHARI (Ezgulik tutuvchi mini-arkada) -->
+        <div class="game-panel" id="game-panel-4" role="tabpanel" aria-labelledby="tab-game4">
+          <div class="game-card">
+            <div class="game-header">
+              <div class="game-meta">
+                <span class="game-badge-soft">4-Oʻyin • Chaqqonlik va Eʼtibor</span>
+                <h3 class="game-name">Qalblar Gavhari: Ezgulik Savati</h3>
+                <p class="game-instruction">
+                  Savatni boshqarib, yuqoridan tushayotgan <strong>Mehr (❤️), Doʻstlik (🤝), Muruvvat (✨)</strong> fazilatlarini tuting. Salbiy sifatlar (kibr, hasad)dan ehtiyot boʻling!
+                </p>
+              </div>
+              <div class="game-stats-box">
+                <div class="stat-pill highlight">
+                  <span>Ball:</span>
+                  <strong id="arcadeScore">0</strong>
+                </div>
+                <div class="stat-pill">
+                  <span>Jon:</span>
+                  <strong id="arcadeLives">❤️❤️❤️</strong>
+                </div>
+                <div class="stat-pill">
+                  <span>Rekord:</span>
+                  <strong id="arcadeHighScore">0</strong>
+                </div>
+                <button type="button" class="btn-sm btn-primary" id="arcadeStartBtn">Oʻyinni boshlash</button>
+              </div>
+            </div>
+
+            <div class="arcade-canvas-wrapper">
+              <canvas id="arcadeCanvas" width="700" height="420" aria-label="Ezgulik tutish o'yini maydoni"></canvas>
+              
+              <!-- Boshqaruv tugmalari (sensorli ekranlar uchun) -->
+              <div class="arcade-mobile-controls">
+                <button type="button" class="control-btn" id="btnMoveLeft" aria-label="Chapga yurish">◀ Chapga</button>
+                <button type="button" class="control-btn" id="btnMoveRight" aria-label="O'ngga yurish">Oʻngga ▶</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2-KATALOG: QIZIQARLI FAKTLAR BO'LIMI -->
+    <section class="section facts-section" id="faktlar">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Ilm va Hayot</span>
+          <h2 class="section-title">Doʻstlik va Muruvvat Haqida Hayratlanarli Faktlar</h2>
+          <p class="section-subtitle">
+            Ilmiy tadqiqotlar, biologiya, tarix va inson psixologiyasida samimiylik va muruvvatning moʻjizaviy kuchi.
+          </p>
+        </div>
+
+        <!-- Faktlar filtri va qidiruv -->
+        <div class="facts-controls">
+          <div class="facts-filter-tabs" role="tablist" aria-label="Faktlar toifalari">
+            <button type="button" class="filter-tab active" data-category="all">Barchasi</button>
+            <button type="button" class="filter-tab" data-category="science">🔬 Ilmiy & Tibbiy</button>
+            <button type="button" class="filter-tab" data-category="history">🏛️ Tarixiy & Milliy</button>
+            <button type="button" class="filter-tab" data-category="nature">🌿 Tabiat & Hayvonot</button>
+            <button type="button" class="filter-tab" data-category="psychology">🧠 Psixologiya</button>
+          </div>
+          <button type="button" class="btn btn-outline-soft" id="randomFactBtn">
+            <span>🎲 Tasodifiy fakt</span>
+          </button>
+        </div>
+
+        <!-- Faktlar kartochkalari -->
+        <div class="facts-grid" id="factsGrid">
+          <!-- JS orqali 8+ ta to'liq boyitilgan faktlar joylashtiriladi -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 3-KATALOG: IBRATLI HIKOYALAR BO'LIMI -->
+    <section class="section stories-section" id="hikoyalar">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Qalb Ozuqasi</span>
+          <h2 class="section-title">Doʻstlik va Muruvvat Haqida Ibratli Hikoyalar</h2>
+          <p class="section-subtitle">
+            Asrlar osha sayqallangan, har bir qalbni toʻlqinlantiradigan va mehr uygʻotadigan durdona qissalar.
+          </p>
+        </div>
+
+        <div class="stories-grid" id="storiesGrid">
+          <!-- 1-hikoya -->
+          <article class="story-card">
+            <div class="story-badge">Sharq Hikmati</div>
+            <div class="story-icon">🏜️</div>
+            <h3 class="story-title">Sahrodagi Ikki Doʻst</h3>
+            <p class="story-excerpt">
+              Ikki doʻst sahro boʻylab yoʻlga chiqishdi. Yoʻlda janjallashib qolishganda, biri ikkinchisiga tarsaki tushirdi. Jabrlangan doʻst hech narsa demay, qumga yozdi...
+            </p>
+            <div class="story-footer">
+              <span class="read-time">⏱️ 3 daqiqa oʻqish</span>
+              <button type="button" class="read-more-btn" data-story="1">
+                Toʻliq oʻqish ➔
+              </button>
+            </div>
+          </article>
+
+          <!-- 2-hikoya -->
+          <article class="story-card">
+            <div class="story-badge">Tarixiy Muruvvat</div>
+            <div class="story-icon">🍞</div>
+            <h3 class="story-title">Bir Burda Non va Qadimiy Muruvvat</h3>
+            <p class="story-excerpt">
+              Qishning qahraton kunlarida bir kambagʻal kishi qornini toʻydirish uchun nonvoyxonaga kirdi. Uning puli yetmasligini koʻrgan notanish yoʻlovchi oʻz taomini unga berdi...
+            </p>
+            <div class="story-footer">
+              <span class="read-time">⏱️ 4 daqiqa oʻqish</span>
+              <button type="button" class="read-more-btn" data-story="2">
+                Toʻliq oʻqish ➔
+              </button>
+            </div>
+          </article>
+
+          <!-- 3-hikoya -->
+          <article class="story-card">
+            <div class="story-badge">Adabiy Meros</div>
+            <div class="story-icon">📜</div>
+            <h3 class="story-title">Alisher Navoiy va Chin Doʻstlik</h3>
+            <p class="story-excerpt">
+              Buyuk mutafakkir Alisher Navoiy va Husayn Boyqaro doʻstligi shunchaki podshoh va vazir munosabati emas, balki ikki qalbning yuksak maʼnaviy sirdoshligi edi...
+            </p>
+            <div class="story-footer">
+              <span class="read-time">⏱️ 5 daqiqa oʻqish</span>
+              <button type="button" class="read-more-btn" data-story="3">
+                Toʻliq oʻqish ➔
+              </button>
+            </div>
+          </article>
+
+          <!-- 4-hikoya -->
+          <article class="story-card">
+            <div class="story-badge">Mehr Saxovati</div>
+            <div class="story-icon">🐦</div>
+            <h3 class="story-title">Boyazid Bistomiy va Chumolilar</h3>
+            <p class="story-excerpt">
+              Bir kuni donishmand safardan qaytgach, oʻzi bilan olib kelgan xurjuvunida boshqa shahardan kelib qolgan chumolini koʻrib qoladi. Uning muruvvati barchani hayratga soladi...
+            </p>
+            <div class="story-footer">
+              <span class="read-time">⏱️ 3 daqiqa oʻqish</span>
+              <button type="button" class="read-more-btn" data-story="4">
+                Toʻliq oʻqish ➔
+              </button>
+            </div>
+          </article>
+
+          <!-- 5-hikoya -->
+          <article class="story-card">
+            <div class="story-badge">Milliy Jasorat</div>
+            <div class="story-icon">🏡</div>
+            <h3 class="story-title">Shomahmudovlar Oylasi Jasorati</h3>
+            <p class="story-excerpt">
+              1941-1945 yillarda toshkentlik temirchi Shoahmad ota va Bahri aya turli millatga mansub 14 nafar yetim bolani oʻz qanoti ostiga olib, mehr bilan tarbiyalashgan...
+            </p>
+            <div class="story-footer">
+              <span class="read-time">⏱️ 4 daqiqa oʻqish</span>
+              <button type="button" class="read-more-btn" data-story="5">
+                Toʻliq oʻqish ➔
+              </button>
+            </div>
+          </article>
+
+          <!-- 6-hikoya -->
+          <article class="story-card">
+            <div class="story-badge">Avlodlar Sabogʻi</div>
+            <div class="story-icon">🌳</div>
+            <h3 class="story-title">Keksa Bogʻbon va Yongʻoq Niholi</h3>
+            <p class="story-excerpt">
+              Toʻqson yoshli chol koʻchat ekayotgan edi. Yoʻlovchi undan: "Otaxon, bu yongʻoq meva berguncha koʻp yillar oʻtadi, nega oʻzingiz yemaydigan koʻchatni ekyapsiz?" deb soʻradi...
+            </p>
+            <div class="story-footer">
+              <span class="read-time">⏱️ 3 daqiqa oʻqish</span>
+              <button type="button" class="read-more-btn" data-story="6">
+                Toʻliq oʻqish ➔
+              </button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4-KATALOG: VIDEOLAR VA MULTFILMLAR BO'LIMI -->
+    <section class="section videos-section" id="videolar">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Tomosha Qiling</span>
+          <h2 class="section-title">Doʻstlik va Muruvvat Haqida Ibratli Videolar</h2>
+          <p class="section-subtitle">
+            Koʻrish orqali his etiladigan, mehr va samimiylikni oʻrgatuvchi maʼnaviy roliklar, ibratli multfilmlar va qisqa filmlar.
+          </p>
+        </div>
+
+        <div class="videos-grid">
+          <!-- Video 1 -->
+          <div class="video-card">
+            <div class="video-thumbnail-box">
+              <iframe 
+                class="video-iframe" 
+                src="https://www.youtube-nocookie.com/embed/3dsh_1g307w" 
+                title="Doʻstlik haqida eng ibratli video" 
+                loading="lazy" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="video-info">
+              <div class="video-category">Animatsion Ibrat</div>
+              <h3 class="video-title">Doʻstlik Koʻprigi — Mehrning Quvvati</h3>
+              <p class="video-desc">
+                Qiyin vaziyatda bir-biriga yelka tutish, manmanlikdan kechib kechirish va haqiqiy doʻstlik orqali toʻsiqlarni yengish haqida ajoyib ibrat.
+              </p>
+              <div class="video-meta-tag">✨ Xulosa: "Kuch birlikda, najot mehrda"</div>
+            </div>
+          </div>
+
+          <!-- Video 2 -->
+          <div class="video-card">
+            <div class="video-thumbnail-box">
+              <iframe 
+                class="video-iframe" 
+                src="https://www.youtube-nocookie.com/embed/uaWA2GbcnJU" 
+                title="Yaxshilik bumerangi — Muruvvat kuchi" 
+                loading="lazy" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="video-info">
+              <div class="video-category">Ijtimoiy Rolik</div>
+              <h3 class="video-title">Yaxshilik Bumerangi: Muruvvat Zanjiri</h3>
+              <p class="video-desc">
+                Bir insonning koʻrsatgan kichik muruvvati qanday qilib oʻnlab insonlar orqali aylanib, dunyoni goʻzallashtirishi haqidagi mashhur motivatsion rolik.
+              </p>
+              <div class="video-meta-tag">✨ Xulosa: "Sen bergan mehr aslo yoʻqolmaydi"</div>
+            </div>
+          </div>
+
+          <!-- Video 3 -->
+          <div class="video-card">
+            <div class="video-thumbnail-box">
+              <iframe 
+                class="video-iframe" 
+                src="https://www.youtube-nocookie.com/embed/5myB_e8wJ54" 
+                title="Doʻstlik va Sadoqat qissasi" 
+                loading="lazy" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="video-info">
+              <div class="video-category">Qisqa Metrajli Film</div>
+              <h3 class="video-title">Qalb Muruvvati: Chin Doʻst Kim?</h3>
+              <p class="video-desc">
+                Doʻstlik sinovlarda toblanadi. Xafagarchilik paytida hamdard boʻla olish va kechirimli boʻlish haqidagi hissiy video hikoya.
+              </p>
+              <div class="video-meta-tag">✨ Xulosa: "Doʻst kulfatda sinaladi"</div>
+            </div>
+          </div>
+
+          <!-- Video 4 -->
+          <div class="video-card">
+            <div class="video-thumbnail-box">
+              <iframe 
+                class="video-iframe" 
+                src="https://www.youtube-nocookie.com/embed/fD3qZ_Z1_qM" 
+                title="Saxovat va Muruvvat fazilati" 
+                loading="lazy" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="video-info">
+              <div class="video-category">Maʼnaviy Suhbat</div>
+              <h3 class="video-title">Muruvvat Va Saxovatning Inson Qalbini Davolashi</h3>
+              <p class="video-desc">
+                Nima uchun kishilarga yaxshilik qilish va ularning koʻnglini koʻtarish inson ruhiyati uchun eng buyuk shifo ekani haqida donishmandlar oʻgiti.
+              </p>
+              <div class="video-meta-tag">✨ Xulosa: "Qalb boyligi — saxovatda"</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5-KATALOG: DO'STINGIZGA MURUVVAT MAKTUBI (E-Otkritka Generator) -->
+    <section class="section letter-section" id="maktub">
+      <div class="container">
+        <div class="card-generator-wrapper">
+          <div class="card-form-side">
+            <span class="section-tag">Samimiy Dil Izhori</span>
+            <h2 class="section-title">Doʻstingizga Muruvvat Maktubi Yuboring</h2>
+            <p class="section-subtitle">
+              Yaqiningiz yoki doʻstingizga samimiy minnatdorchilik bildiring. Chiroyli elektron otkritka yarating va uni ulashing!
+            </p>
+
+            <form class="postcard-form" id="postcardForm">
+              <div class="form-group">
+                <label for="friendName">Doʻstingizning ismi:</label>
+                <input type="text" id="friendName" placeholder="Masalan: Azizbek yoki Malika" required>
+              </div>
+
+              <div class="form-group">
+                <label for="presetWish">Tayyor ezgu tilaklardan tanlang:</label>
+                <select id="presetWish">
+                  <option value="custom">-- Oʻz tilagingizni yozish --</option>
+                  <option value="1" selected>"Qadrdon doʻstim! Sen bilan oʻtgan har bir kun qalbimga quvonch va ishonch bagʻishlaydi. Yaxshi hamki borsan!"</option>
+                  <option value="2">"Muruvvating va samimiy qalbing uchun ming rahmat! Dunyoda sen kabi fidoyi va mehribon insonlar koʻp boʻlsin!"</option>
+                  <option value="3">"Chin doʻst — qalb oinasi deydilar. Hayotimdagi doimiy koʻmak va ishonching uchun sendan cheksiz minnatdorman!"</option>
+                  <option value="4">"Qalbingdagi begʻaraz yaxshilik nuri hech qachon soʻnmasin. Senga mustahkam sogʻlik va cheksiz baxt tilayman!"</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="customMessage">Maktub matni (tahrirlashingiz mumkin):</label>
+                <textarea id="customMessage" rows="3" placeholder="Doʻstingizga yurak soʻzlaringizni yozing..."></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="senderName">Sizning ismingiz:</label>
+                <input type="text" id="senderName" placeholder="Masalan: Sardor" required>
+              </div>
+
+              <div class="form-group">
+                <label>Otkritka uslubi (fon rangi):</label>
+                <div class="color-picker-row">
+                  <button type="button" class="color-option active" data-theme="emerald" title="Zumrad Zangori"></button>
+                  <button type="button" class="color-option" data-theme="sunset" title="Quyosh Nuri"></button>
+                  <button type="button" class="color-option" data-theme="violet" title="Nilufar Nafisligi"></button>
+                  <button type="button" class="color-option" data-theme="sky" title="Moviy Tinchlik"></button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Otkritka jonli prevyusi -->
+          <div class="card-preview-side">
+            <div class="postcard-canvas-wrapper" id="postcardPreview" data-theme="emerald">
+              <div class="postcard-decor-corner top-left">🌸</div>
+              <div class="postcard-decor-corner top-right">✨</div>
+              <div class="postcard-content">
+                <div class="postcard-header">
+                  <span class="postcard-badge">Doʻstlik va Muruvvat Maktubi</span>
+                  <h3 class="postcard-recipient" id="previewRecipient">Qadrli Doʻstim!</h3>
+                </div>
+                <p class="postcard-message" id="previewMessage">
+                  "Qadrdon doʻstim! Sen bilan oʻtgan har bir kun qalbimga quvonch va ishonch bagʻishlaydi. Yaxshi hamki borsan!"
+                </p>
+                <div class="postcard-footer">
+                  <div class="postcard-sign">
+                    <span class="sign-label">Ehtirom ila:</span>
+                    <strong class="sign-name" id="previewSender">Sodiq Doʻsting</strong>
+                  </div>
+                  <div class="postcard-seal">🤝</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="postcard-actions">
+              <button type="button" class="btn btn-accent" id="sendTelegramBtn">
+                <span>✈️ Telegram botga yuborish</span>
+              </button>
+              <button type="button" class="btn btn-primary" id="copyCardTextBtn">
+                <span>📋 Matnni nusxalash</span>
+              </button>
+              <button type="button" class="btn btn-secondary" id="downloadCardBtn">
+                <span>🖼️ Rasm yuklab olish</span>
+              </button>
+            </div>
+            <div class="copy-status" id="copyStatusMessage" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- SAYT FOOTERI -->
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <span class="logo-icon">🤝</span>
+          <strong>Doʻstlik va Muruvvat</strong>
+        </div>
+        <p class="footer-quote">
+          "Odamiy ersang, demagil odami,<br>
+          Onikim, yoʻq xalq gʻamidin gʻami."<br>
+          <em>— Mir Alisher Navoiy</em>
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <h4>Boʻlimlar</h4>
+        <ul>
+          <li><a href="#oyinlar">4 xil Oʻyinlar</a></li>
+          <li><a href="#faktlar">Qiziqarli Faktlar</a></li>
+          <li><a href="#hikoyalar">Ibratli Hikoyalar</a></li>
+          <li><a href="#videolar">Ibratli Videolar</a></li>
+          <li><a href="#maktub">Muruvvat Maktubi</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-creed">
+        <h4>Bizning shior</h4>
+        <p>
+          Doʻstlik — millat, til va masofani tanlamaydi. Muruvvat esa inson qalbining eng oliy ziynatidir.
+        </p>
+        <div class="footer-stats">
+          <span>❤️ Mehr-oqibat abadiy boʻlsin!</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container bottom-content">
+        <p>© 2026 "Doʻstlik va Muruvvat" loyihasi. Ezgulik ulashish niyatida yaratildi.</p>
+        <p>Barcha huquqlar mehr va insoniylik qonunlari bilan himoyalangan.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- NATIVE MODAL DIALOGS (Modern Web Guidance & Accessibility Compliant) -->
+
+  <!-- Hikoyani to'liq o'qish modali -->
+  <dialog id="storyModal" closedby="any" aria-labelledby="storyModalTitle">
+    <div class="modal-inner">
+      <div class="modal-header">
+        <div class="modal-badge" id="storyModalCategory">Ibratli Qissa</div>
+        <h2 id="storyModalTitle">Hikoya Sarlavhasi</h2>
+        <form method="dialog">
+          <button type="submit" class="modal-close-btn" aria-label="Hikoyani yopish">✕</button>
+        </form>
+      </div>
+      <div class="modal-body" id="storyModalBody">
+        <!-- Hikoya to'liq matni JS orqali joylanadi -->
+      </div>
+      <div class="modal-moral" id="storyModalMoral">
+        <!-- Hikmat -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-soft" id="storySpeakBtn">
+          <span>🔊 Ovozli eshitish</span>
+        </button>
+        <form method="dialog">
+          <button type="submit" class="btn btn-primary" autofocus>Tushundim (Yopish)</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Kunlik Muruvvat Chaqirig'i Modali -->
+  <dialog id="dailyKindnessModal" closedby="any" aria-labelledby="dailyKindnessTitle">
+    <div class="modal-inner">
+      <div class="modal-header">
+        <span class="modal-emoji">🌟</span>
+        <h2 id="dailyKindnessTitle">Bugungi Muruvvat Vazifangiz</h2>
+        <form method="dialog">
+          <button type="submit" class="modal-close-btn" aria-label="Yopish">✕</button>
+        </form>
+      </div>
+      <div class="modal-body">
+        <div class="daily-task-card">
+          <div class="task-day-tag" id="taskDayLabel">Bugun uchun topshiriq:</div>
+          <h3 class="task-action" id="taskActionText">Bir kishiga kutilmagan samimiy tabassum va yaxshi soʻz ayting!</h3>
+          <p class="task-reason" id="taskReasonText">
+            Tabassum — eng arzon va eng qimmatli muruvvatdir. U boshqalarning kunini yoritadi va oʻzingizda quvonch uygʻotadi.
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-accent" id="markTaskDoneBtn">
+          <span>✅ Bajarildi deb belgilash (+10 ball)</span>
+        </button>
+        <form method="dialog">
+          <button type="submit" class="btn btn-secondary">Yopish</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- O'yin G'alabasi / Yakuniy Natija Modali -->
+  <dialog id="gameResultModal" closedby="any" aria-labelledby="gameResultTitle">
+    <div class="modal-inner text-center">
+      <div class="modal-header justify-center">
+        <div class="victory-icon" id="gameResultEmoji">🏆</div>
+        <h2 id="gameResultTitle">Ajoyib natija!</h2>
+      </div>
+      <div class="modal-body" id="gameResultBody">
+        <!-- Natija tafsilotlari -->
+      </div>
+      <div class="modal-footer justify-center">
+        <form method="dialog">
+          <button type="submit" class="btn btn-primary" autofocus>Davom etish</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
