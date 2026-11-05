@@ -1307,11 +1307,204 @@ document.addEventListener('DOMContentLoaded', () => {
   const downloadCardBtn = document.getElementById('downloadCardBtn');
   const copyStatusMessage = document.getElementById('copyStatusMessage');
 
+  // Rasm yuklash elementlari
+  const cardPhotoInput = document.getElementById('cardPhotoInput');
+  const photoDropZone = document.getElementById('photoDropZone');
+  const userPhotoPreview = document.getElementById('userPhotoPreview');
+  const userPhotoImg = document.getElementById('userPhotoImg');
+  const photoFileName = document.getElementById('photoFileName');
+  const removePhotoBtn = document.getElementById('removePhotoBtn');
+  const postcardPhotoSpot = document.getElementById('postcardPhotoSpot');
+  const cardSpotImg = document.getElementById('cardSpotImg');
+
+  let uploadedUserPhotoBase64 = null;
+  let uploadedUserPhotoObj = null;
+
+  // Rasm tanlanganda ishlov berish
+  function handlePhotoSelect(file) {
+    if (!file || !file.type.startsWith('image/')) {
+      alert('Iltimos, rasm formatidagi fayl tanlang (JPG, PNG, WebP).');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      uploadedUserPhotoBase64 = e.target.result;
+      
+      uploadedUserPhotoObj = new Image();
+      uploadedUserPhotoObj.onload = () => {
+        // Postcard prevyusiga chiqarish
+        if (cardSpotImg && postcardPhotoSpot) {
+          cardSpotImg.src = uploadedUserPhotoBase64;
+          postcardPhotoSpot.hidden = false;
+        }
+      };
+      uploadedUserPhotoObj.src = uploadedUserPhotoBase64;
+
+      // Forma prevyusiga chiqarish
+      if (userPhotoImg && userPhotoPreview && photoDropZone) {
+        userPhotoImg.src = uploadedUserPhotoBase64;
+        photoFileName.textContent = file.name;
+        userPhotoPreview.hidden = false;
+        photoDropZone.style.display = 'none';
+      }
+
+      sfx.match();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  if (cardPhotoInput) {
+    cardPhotoInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        handlePhotoSelect(e.target.files[0]);
+      }
+    });
+  }
+
+  if (photoDropZone) {
+    photoDropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      photoDropZone.classList.add('dragover');
+    });
+    photoDropZone.addEventListener('dragleave', () => {
+      photoDropZone.classList.remove('dragover');
+    });
+    photoDropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      photoDropZone.classList.remove('dragover');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handlePhotoSelect(e.dataTransfer.files[0]);
+      }
+    });
+  }
+
+  if (removePhotoBtn) {
+    removePhotoBtn.addEventListener('click', () => {
+      sfx.click();
+      uploadedUserPhotoBase64 = null;
+      uploadedUserPhotoObj = null;
+      if (cardPhotoInput) cardPhotoInput.value = '';
+      if (userPhotoPreview) userPhotoPreview.hidden = true;
+      if (photoDropZone) photoDropZone.style.display = 'flex';
+      if (postcardPhotoSpot) postcardPhotoSpot.hidden = true;
+      if (cardSpotImg) cardSpotImg.src = '';
+    });
+  }
+
   // Telegram bot sozlamalari
   const TG_TOKEN = '9089759537:AAFHoPgUyJFkjke1pkAkMheq9pQHHz5JgsU';
   const TG_CHAT_ID = '7290313985';
 
-  // Telegram orqali yuborish funksiyasi
+  // Canvas orqali otkritka rasmini chizish funksiyasi
+  function renderPostcardToCanvas() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 550;
+    const ctx = canvas.getContext('2d');
+
+    const theme = postcardPreview.getAttribute('data-theme') || 'emerald';
+    let grad = ctx.createLinearGradient(0, 0, 800, 550);
+
+    if (theme === 'emerald') {
+      grad.addColorStop(0, '#065f46');
+      grad.addColorStop(0.6, '#059669');
+      grad.addColorStop(1, '#10b981');
+    } else if (theme === 'sunset') {
+      grad.addColorStop(0, '#9a3412');
+      grad.addColorStop(0.5, '#ea580c');
+      grad.addColorStop(1, '#f59e0b');
+    } else if (theme === 'violet') {
+      grad.addColorStop(0, '#5b21b6');
+      grad.addColorStop(0.5, '#7c3aed');
+      grad.addColorStop(1, '#c026d3');
+    } else {
+      grad.addColorStop(0, '#075985');
+      grad.addColorStop(0.5, '#0284c7');
+      grad.addColorStop(1, '#0ea5e9');
+    }
+
+    // Fon
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 800, 550);
+
+    // Naqsh hoshiyasi
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+    ctx.lineWidth = 4;
+    ctx.strokeRect(25, 25, 750, 500);
+
+    // Kichik nishon
+    ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
+    ctx.beginPath();
+    ctx.roundRect(50, 50, 240, 32, 16);
+    ctx.fill();
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 13px sans-serif";
+    ctx.fillText("DOʻSTLIK VA MURUVVAT MAKTUBI", 65, 71);
+
+    // Qabul qiluvchi
+    ctx.font = "bold 32px serif";
+    ctx.fillText(previewRecipient.textContent, 50, 135);
+
+    // Agar foydalanuvchi rasm yuklagan bo'lsa, uni doira shaklida chizamiz
+    if (uploadedUserPhotoObj && uploadedUserPhotoObj.complete) {
+      try {
+        const px = 680, py = 120, pr = 48;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(px, py, pr, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.clip();
+        ctx.drawImage(uploadedUserPhotoObj, px - pr, py - pr, pr * 2, pr * 2);
+        ctx.restore();
+
+        // Oq hoshiya
+        ctx.save();
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(px, py, pr, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      } catch (err) {
+        console.warn('Canvas photo draw error:', err);
+      }
+    }
+
+    // Matn (so'zlarni qatorlarga ajratish)
+    ctx.font = "italic 22px Georgia";
+    const words = previewMessage.textContent.split(' ');
+    let line = '';
+    let y = 195;
+    for (let n = 0; n < words.length; n++) {
+      const testLine = line + words[n] + ' ';
+      const metrics = ctx.measureText(testLine);
+      if (metrics.width > 700 && n > 0) {
+        ctx.fillText(line, 50, y);
+        line = words[n] + ' ';
+        y += 36;
+      } else {
+        line = testLine;
+      }
+    }
+    ctx.fillText(line, 50, y);
+
+    // Imzo
+    ctx.font = "16px sans-serif";
+    ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+    ctx.fillText("Ehtirom ila:", 50, 450);
+    ctx.font = "bold 26px sans-serif";
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText(previewSender.textContent, 50, 485);
+
+    // Muhr
+    ctx.font = "40px sans-serif";
+    ctx.fillText("🤝", 690, 480);
+
+    return canvas;
+  }
+
+  // Telegram orqali maktub va rasm yuborish funksiyasi
   async function sendToTelegramBot() {
     const friend = friendNameInput.value.trim() || 'Qadrli Doʻstim';
     const message = customMessageInput.value.trim() || previewMessage.textContent.replace(/^"|"$/g, '');
@@ -1321,8 +1514,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!sendTelegramBtn) return;
     sendTelegramBtn.disabled = true;
     const origHtml = sendTelegramBtn.innerHTML;
-    sendTelegramBtn.innerHTML = '<span>⏳ Yuborilmoqda...</span>';
-    copyStatusMessage.textContent = 'Maktub Telegram botga joʻnatilmoqda...';
+    sendTelegramBtn.innerHTML = '<span>⏳ Rasm va maktub yuborilmoqda...</span>';
+    copyStatusMessage.textContent = 'Maktub va rasm Telegram botga joʻnatilmoqda...';
     copyStatusMessage.style.color = 'var(--primary)';
 
     const themeNames = {
@@ -1333,10 +1526,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const now = new Date().toLocaleString('uz-UZ', { timeZone: 'Asia/Tashkent' });
 
-    const telegramText = 
+    const telegramCaption = 
 `💌 <b>YANGI MURUVVAT MAKTUBI!</b>
 ━━━━━━━━━━━━━━━━━━━━━━
-👤 <b>Kimga (Qabul qiluvchi):</b> ${friend}
+👤 <b>Kimga:</b> ${friend}
 💬 <b>Maktub matni:</b>
 <i>"${message}"</i>
 
@@ -1346,37 +1539,75 @@ document.addEventListener('DOMContentLoaded', () => {
 ━━━━━━━━━━━━━━━━━━━━━━
 🌐 <i>"Doʻstlik va Muruvvat" veb-portalidan yuborildi</i>`;
 
+    // 1. Otkritka rasmini avtomatik yaratish
+    const cardCanvas = renderPostcardToCanvas();
+    const cardImageBase64 = cardCanvas.toDataURL('image/png');
+
     let success = false;
 
-    // 1. Backend server orqali yuborish (agar localhost:3000 da ishlayotgan bo'lsa)
+    // 2. Birinchi bo'lib lokal server orqali yuborish
     try {
       const resp = await fetch('/api/send-letter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ friendName: friend, message, senderName: sender, theme })
+        body: JSON.stringify({
+          friendName: friend,
+          message: message,
+          senderName: sender,
+          theme: theme,
+          imageBase64: cardImageBase64,
+          userPhotoBase64: uploadedUserPhotoBase64
+        })
       });
       const data = await resp.json();
       if (data.ok) success = true;
     } catch (e) {
-      console.warn('Backend orqali ulanib boʻlmadi, bevosita Telegram API chaqirilmoqda...', e);
+      console.warn('Backend orqali ulanib boʻlmadi, toʻgʻridan-toʻgʻri Telegram API chaqirilmoqda...', e);
     }
 
-    // 2. Agar backend bo'lmasa, to'g'ridan-to'g'ri Telegram API ga yuborish
+    // 3. Agar backend server bo'lmasa, to'g'ridan-to'g'ri brauzer orqali Telegram API ga FormData yordamida yuborish
     if (!success) {
       try {
-        const tgResp = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: TG_CHAT_ID,
-            text: telegramText,
-            parse_mode: 'HTML'
-          })
+        await new Promise((resolve) => {
+          cardCanvas.toBlob(async (blob) => {
+            const formData = new FormData();
+            formData.append('chat_id', TG_CHAT_ID);
+            formData.append('photo', blob, 'muruvvat-maktubi.png');
+            formData.append('caption', telegramCaption);
+            formData.append('parse_mode', 'HTML');
+
+            const tgResp = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendPhoto`, {
+              method: 'POST',
+              body: formData
+            });
+            const tgData = await tgResp.json();
+            if (tgData.ok) success = true;
+
+            // Agar qo'shimcha rasm ham yuklangan bo'lsa
+            if (uploadedUserPhotoBase64) {
+              try {
+                // Base64 to blob
+                const fetchRes = await fetch(uploadedUserPhotoBase64);
+                const userBlob = await fetchRes.blob();
+                const userFd = new FormData();
+                userFd.append('chat_id', TG_CHAT_ID);
+                userFd.append('photo', userBlob, 'dostlik-rasmi.jpg');
+                userFd.append('caption', `📸 <b>Doʻstlik xotirasi:</b> ${friend} va ${sender} surati`);
+                userFd.append('parse_mode', 'HTML');
+                await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendPhoto`, {
+                  method: 'POST',
+                  body: userFd
+                });
+              } catch (uErr) {
+                console.warn('User photo direct upload error:', uErr);
+              }
+            }
+
+            resolve();
+          }, 'image/png');
         });
-        const tgData = await tgResp.json();
-        if (tgData.ok) success = true;
       } catch (e) {
-        console.error('Telegram API xatosi:', e);
+        console.error('Telegram API toʻgʻridan-toʻgʻri xatosi:', e);
       }
     }
 
@@ -1385,18 +1616,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (success) {
       sfx.success();
-      copyStatusMessage.textContent = '🎉 Maktubingiz Telegram botga (@maktubdost_bot) muvaffaqiyatli yetkazildi!';
+      copyStatusMessage.textContent = '🎉 Maktub va rasm Telegram botga (@maktubdost_bot) muvaffaqiyatli yetkazildi!';
       copyStatusMessage.style.color = 'var(--primary)';
 
       openGameResultModal(
         '💌',
-        'Maktub Telegramga yetib bordi!',
+        'Maktub va Rasm Telegramga yuborildi!',
         `<p style="font-size:1.15rem; margin-bottom:1rem;">
-          Sizning <strong>"${friend}"</strong> nomiga yoʻllagan maktubingiz 
-          Telegram botingizga (<code>@maktubdost_bot</code>) yuborildi!
+          Sizning <strong>"${friend}"</strong> nomiga yozgan maktubingiz va tayyorlangan <strong>otkritka rasmi</strong> 
+          Telegram botingizga (<code>@maktubdost_bot</code>) foto shaklida yetkazildi!
         </p>
         <p style="color:var(--text-muted); font-size:0.95rem;">
-          Maktub egasi oʻz doʻstining samimiy mehridan quvonadi degan umiddamiz.
+          Endi Telegram botingizda maktubni va rasmni toʻliq koʻrishingiz mumkin!
         </p>`
       );
     } else {
@@ -1409,6 +1640,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (sendTelegramBtn) {
     sendTelegramBtn.addEventListener('click', sendToTelegramBot);
   }
+
+  // Rasm sifatida yuklab olish tugmasi
+  downloadCardBtn.addEventListener('click', () => {
+    sfx.success();
+    const canvas = renderPostcardToCanvas();
+    const link = document.createElement('a');
+    link.download = `dostlik-maktubi-${Date.now()}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
 
   // Input listeners
   friendNameInput.addEventListener('input', () => {
@@ -1454,99 +1695,6 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => copyStatusMessage.textContent = "", 3000);
     });
   });
-
-  // Canvas orqali rasm sifatida yuklab olish
-  downloadCardBtn.addEventListener('click', () => {
-    sfx.success();
-    generatePostcardImage();
-  });
-
-  function generatePostcardImage() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 800;
-    canvas.height = 550;
-    const ctx = canvas.getContext('2d');
-
-    const theme = postcardPreview.getAttribute('data-theme');
-    let grad = ctx.createLinearGradient(0, 0, 800, 550);
-
-    if (theme === 'emerald') {
-      grad.addColorStop(0, '#065f46');
-      grad.addColorStop(0.6, '#059669');
-      grad.addColorStop(1, '#10b981');
-    } else if (theme === 'sunset') {
-      grad.addColorStop(0, '#9a3412');
-      grad.addColorStop(0.5, '#ea580c');
-      grad.addColorStop(1, '#f59e0b');
-    } else if (theme === 'violet') {
-      grad.addColorStop(0, '#5b21b6');
-      grad.addColorStop(0.5, '#7c3aed');
-      grad.addColorStop(1, '#c026d3');
-    } else {
-      grad.addColorStop(0, '#075985');
-      grad.addColorStop(0.5, '#0284c7');
-      grad.addColorStop(1, '#0ea5e9');
-    }
-
-    // Fon
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 800, 550);
-
-    // Naqsh hoshiyasi
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
-    ctx.lineWidth = 4;
-    ctx.strokeRect(25, 25, 750, 500);
-
-    // Kichik nishon
-    ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
-    ctx.beginPath();
-    ctx.roundRect(50, 50, 240, 32, 16);
-    ctx.fill();
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 13px sans-serif";
-    ctx.fillText("DOʻSTLIK VA MURUVVAT MAKTUBI", 65, 71);
-
-    // Qabul qiluvchi
-    ctx.font = "bold 32px serif";
-    ctx.fillText(previewRecipient.textContent, 50, 140);
-
-    // Matn (so'zlarni qatorlarga ajratish)
-    ctx.font = "italic 22px Georgia";
-    const words = previewMessage.textContent.split(' ');
-    let line = '';
-    let y = 200;
-    for (let n = 0; n < words.length; n++) {
-      const testLine = line + words[n] + ' ';
-      const metrics = ctx.measureText(testLine);
-      if (metrics.width > 700 && n > 0) {
-        ctx.fillText(line, 50, y);
-        line = words[n] + ' ';
-        y += 36;
-      } else {
-        line = testLine;
-      }
-    }
-    ctx.fillText(line, 50, y);
-
-    // Imzo
-    ctx.font = "16px sans-serif";
-    ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
-    ctx.fillText("Ehtirom ila:", 50, 450);
-    ctx.font = "bold 26px sans-serif";
-    ctx.fillStyle = "#ffffff";
-    ctx.fillText(previewSender.textContent, 50, 485);
-
-    // Muhr
-    ctx.font = "40px sans-serif";
-    ctx.fillText("🤝", 690, 480);
-
-    // Faylni yuklab olish
-    const link = document.createElement('a');
-    link.download = `dostlik-maktubi-${Date.now()}.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  }
 
   // ==========================================================================
   // 7. KUNLIK MURUVVAT CHAQIRIG'I (Daily Kindness Mission)

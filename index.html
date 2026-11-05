@@ -595,6 +595,27 @@
                 <input type="text" id="senderName" placeholder="Masalan: Sardor" required>
               </div>
 
+              <!-- Rasm yuklash maydoni -->
+              <div class="form-group">
+                <label for="cardPhotoInput">📸 Rasm biriktirish (ixtiyoriy — Telegram botga ham boradi):</label>
+                <div class="photo-upload-wrapper">
+                  <label for="cardPhotoInput" class="photo-upload-zone" id="photoDropZone">
+                    <span class="upload-icon">📷</span>
+                    <span class="upload-text" id="uploadStatusText">Rasm tanlang yoki shu yerga tashlang</span>
+                    <span class="upload-subtext">JPG, PNG, WebP (Maktub bilan birga Telegram botga yetkaziladi)</span>
+                  </label>
+                  <input type="file" id="cardPhotoInput" accept="image/*" class="visually-hidden-file">
+                  
+                  <div class="user-photo-preview" id="userPhotoPreview" hidden>
+                    <img id="userPhotoImg" alt="Biriktirilgan surat">
+                    <div class="photo-preview-info">
+                      <span class="photo-filename" id="photoFileName">surat.jpg</span>
+                      <button type="button" class="btn-remove-photo" id="removePhotoBtn" title="Rasmni oʻchirish">✕ Bekor qilish</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="form-group">
                 <label>Otkritka uslubi (fon rangi):</label>
                 <div class="color-picker-row">
@@ -617,6 +638,12 @@
                   <span class="postcard-badge">Doʻstlik va Muruvvat Maktubi</span>
                   <h3 class="postcard-recipient" id="previewRecipient">Qadrli Doʻstim!</h3>
                 </div>
+
+                <!-- Otkritka ichidagi rasm ramkasi (agar rasm yuklansa ko'rinadi) -->
+                <div class="postcard-photo-spot" id="postcardPhotoSpot" hidden>
+                  <img id="cardSpotImg" alt="Doʻstlik surati">
+                </div>
+
                 <p class="postcard-message" id="previewMessage">
                   "Qadrdon doʻstim! Sen bilan oʻtgan har bir kun qalbimga quvonch va ishonch bagʻishlaydi. Yaxshi hamki borsan!"
                 </p>
